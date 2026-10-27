@@ -49,12 +49,12 @@ namespace ZLogger.Tests
 
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Message").GetString().Should().Be("FooBar100 NanoNanoあいうえお");
-            doc.GetProperty("tako").GetInt32().Should().Be(100);
-            doc.GetProperty("yaki").GetString().Should().Be("あいうえお");
+            doc.GetProperty("Message").GetString().ShouldBe("FooBar100 NanoNanoあいうえお");
+            doc.GetProperty("tako").GetInt32().ShouldBe(100);
+            doc.GetProperty("yaki").GetString().ShouldBe("あいうえお");
 
-            doc.GetProperty("Hash").GetString().Should().Be(sourceCodeHash);
-            doc.GetProperty("LogLevel").GetString().Should().Be("Debug");
+            doc.GetProperty("Hash").GetString().ShouldBe(sourceCodeHash);
+            doc.GetProperty("LogLevel").GetString().ShouldBe("Debug");
         }
 
         [Fact]
@@ -89,12 +89,12 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.TryGetProperty("Message", out _).Should().BeFalse();
-            doc.GetProperty("LogLevel").GetString().Should().Be("Information");
-            doc.GetProperty("Timestamp").GetDateTimeOffset().Should().Be(now);
-            doc.GetProperty("EventId").GetInt32().Should().Be(1);
-            doc.TryGetProperty("EventIdName", out _).Should().BeFalse();
-            doc.TryGetProperty("Category", out _).Should().BeFalse();
+            doc.TryGetProperty("Message", out _).ShouldBeFalse();
+            doc.GetProperty("LogLevel").GetString().ShouldBe("Information");
+            doc.GetProperty("Timestamp").GetDateTimeOffset().ShouldBe(now);
+            doc.GetProperty("EventId").GetInt32().ShouldBe(1);
+            doc.TryGetProperty("EventIdName", out _).ShouldBeFalse();
+            doc.TryGetProperty("Category", out _).ShouldBeFalse();
         }
 
         [Fact]
@@ -119,13 +119,13 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.TryGetProperty("Message", out _).Should().BeFalse();
-            doc.TryGetProperty("LogLevel", out _).Should().BeFalse();
-            doc.TryGetProperty("Timestamp", out _).Should().BeFalse();
-            doc.TryGetProperty("EventId", out _).Should().BeFalse();
-            doc.TryGetProperty("EventIdName", out _).Should().BeFalse();
-            doc.TryGetProperty("EventIdName", out _).Should().BeFalse();
-            doc.TryGetProperty("Category", out _).Should().BeFalse();
+            doc.TryGetProperty("Message", out _).ShouldBeFalse();
+            doc.TryGetProperty("LogLevel", out _).ShouldBeFalse();
+            doc.TryGetProperty("Timestamp", out _).ShouldBeFalse();
+            doc.TryGetProperty("EventId", out _).ShouldBeFalse();
+            doc.TryGetProperty("EventIdName", out _).ShouldBeFalse();
+            doc.TryGetProperty("EventIdName", out _).ShouldBeFalse();
+            doc.TryGetProperty("Category", out _).ShouldBeFalse();
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace ZLogger.Tests
             var json = await Task.Run(() => processor.DequeueAsString(), TestContext.Current.CancellationToken);
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("p_").GetInt32().Should().Be(1);
-            doc.GetProperty("p_" + longKey).GetInt32().Should().Be(2);
+            doc.GetProperty("p_").GetInt32().ShouldBe(1);
+            doc.GetProperty("p_" + longKey).GetInt32().ShouldBe(2);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace ZLogger.Tests
             logger.ZLogDebug($"{x}");
 
             var format = () => Task.Run(() => processor.DequeueAsString(), TestContext.Current.CancellationToken);
-            (await format.Should().ThrowAsync<InvalidOperationException>()).Which.Message.Should().Contain(nameof(FailingMutator));
+            (await Should.ThrowAsync<InvalidOperationException>(format)).Message.ShouldContain(nameof(FailingMutator), Case.Sensitive);
         }
 
         sealed class FailingMutator : IKeyNameMutator
@@ -263,9 +263,9 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Message").GetString().Should().Be("tako: 100 yaki: あいうえお");
-            doc.GetProperty("tako").GetInt32().Should().Be(100);
-            doc.GetProperty("yaki").GetString().Should().Be("あいうえお");
+            doc.GetProperty("Message").GetString().ShouldBe("tako: 100 yaki: あいうえお");
+            doc.GetProperty("tako").GetInt32().ShouldBe(100);
+            doc.GetProperty("yaki").GetString().ShouldBe("あいうえお");
         }
 
         [Fact]
@@ -296,9 +296,9 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Message").GetString().Should().Be("tako: 100 yaki: あいうえお");
-            doc.GetProperty("Tako").GetInt32().Should().Be(100);
-            doc.GetProperty("Yaki").GetString().Should().Be("あいうえお");
+            doc.GetProperty("Message").GetString().ShouldBe("tako: 100 yaki: あいうえお");
+            doc.GetProperty("Tako").GetInt32().ShouldBe(100);
+            doc.GetProperty("Yaki").GetString().ShouldBe("あいうえお");
         }
 
         [Fact]
@@ -329,9 +329,9 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Message").GetString().Should().Be("tako: 100 yaki: あいうえお");
-            doc.GetProperty("Tako").GetInt32().Should().Be(100);
-            doc.GetProperty("Yaki").GetString().Should().Be("あいうえお");
+            doc.GetProperty("Message").GetString().ShouldBe("tako: 100 yaki: あいうえお");
+            doc.GetProperty("Tako").GetInt32().ShouldBe(100);
+            doc.GetProperty("Yaki").GetString().ShouldBe("あいうえお");
         }
 
         [Fact]
@@ -363,9 +363,9 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Message").GetString().Should().Be("tako: 100 yaki: あいうえお");
-            doc.GetProperty("Payload").GetProperty("Tako").GetInt32().Should().Be(100);
-            doc.GetProperty("Payload").GetProperty("Yaki").GetString().Should().Be("あいうえお");
+            doc.GetProperty("Message").GetString().ShouldBe("tako: 100 yaki: あいうえお");
+            doc.GetProperty("Payload").GetProperty("Tako").GetInt32().ShouldBe(100);
+            doc.GetProperty("Payload").GetProperty("Yaki").GetString().ShouldBe("あいうえお");
         }
 
         [Fact]
@@ -399,12 +399,12 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.TryGetProperty("MMMMMMMMMMMOsage", out _).Should().BeTrue();
-            doc.TryGetProperty("LeVeL5", out _).Should().BeTrue();
-            doc.TryGetProperty("TST", out _).Should().BeTrue();
-            doc.TryGetProperty("EventIddd", out _).Should().BeTrue();
-            doc.TryGetProperty("EventNAME", out _).Should().BeTrue();
-            doc.TryGetProperty("CAT", out _).Should().BeTrue();
+            doc.TryGetProperty("MMMMMMMMMMMOsage", out _).ShouldBeTrue();
+            doc.TryGetProperty("LeVeL5", out _).ShouldBeTrue();
+            doc.TryGetProperty("TST", out _).ShouldBeTrue();
+            doc.TryGetProperty("EventIddd", out _).ShouldBeTrue();
+            doc.TryGetProperty("EventNAME", out _).ShouldBeTrue();
+            doc.TryGetProperty("CAT", out _).ShouldBeTrue();
         }
 
 
@@ -438,8 +438,8 @@ namespace ZLogger.Tests
             var json = processor.DequeueAsString();
             var doc = JsonDocument.Parse(json).RootElement;
 
-            doc.GetProperty("Call").GetInt32().Should().Be(110);
-            doc.GetProperty("Call2").GetInt32().Should().Be(3);
+            doc.GetProperty("Call").GetInt32().ShouldBe(110);
+            doc.GetProperty("Call2").GetInt32().ShouldBe(3);
         }
 
         [Fact]
@@ -466,7 +466,7 @@ namespace ZLogger.Tests
             using var sr = new StreamReader(new MemoryStream(ms.ToArray()), Encoding.UTF8);
             var json = sr.ReadLine();
 
-            json.Should().NotContainAny("\\u");
+            json.ShouldNotContain("\\u", Case.Sensitive);
         }
 
         class MyClass

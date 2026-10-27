@@ -1,4 +1,4 @@
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 using System;
 using Utf8StringInterpolation;
@@ -27,53 +27,53 @@ namespace ZLogger.Tests
             var logger = loggerFactory.CreateLogger("test");
 
             logger.ZLogDebug($"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLogDebug(new EventId(10), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLogDebug(new Exception(), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLogDebug(new EventId(10), new Exception(), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             var bar = "bar";
             logger.ZLogDebug($"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLogDebug(new EventId(10), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLogDebug(new Exception(), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLogDebug(new EventId(10), new Exception(), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLog(LogLevel.Debug, $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLog(LogLevel.Debug, new EventId(10), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLog(LogLevel.Debug, new Exception(), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLog(LogLevel.Debug, new EventId(10), new Exception(), $"foo");
-            processor.DequeueAsString().Should().Be("foo");
+            processor.DequeueAsString().ShouldBe("foo");
 
             logger.ZLog(LogLevel.Debug, $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLog(LogLevel.Debug, new EventId(10), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLog(LogLevel.Debug, new Exception(), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
 
             logger.ZLog(LogLevel.Debug, new EventId(10), new Exception(), $"foo {bar}");
-            processor.DequeueAsString().Should().Be("foo bar");
+            processor.DequeueAsString().ShouldBe("foo bar");
         }
 
         [Fact]
@@ -98,17 +98,17 @@ namespace ZLogger.Tests
             var x = 100;
             var y = 200;
             logger.ZLogDebug($"FooBar{x}-NanoNano{y}");
-            processsor.DequeueAsString().Should().Be("[Pre:Debug]FooBar100-NanoNano200[Suf:test]");
+            processsor.DequeueAsString().ShouldBe("[Pre:Debug]FooBar100-NanoNano200[Suf:test]");
 
             logger.ZLogInformation($"FooBar{x}-NanoNano{y}");
-            processsor.DequeueAsString().Should().Be("[Pre:Information]FooBar100-NanoNano200[Suf:test]");
+            processsor.DequeueAsString().ShouldBe("[Pre:Information]FooBar100-NanoNano200[Suf:test]");
 
             // fallback case
             logger.LogDebug("FooBar{0}-NanoNano{1}", 100, 200);
-            processsor.DequeueAsString().Should().Be("[Pre:Debug]FooBar100-NanoNano200[Suf:test]");
+            processsor.DequeueAsString().ShouldBe("[Pre:Debug]FooBar100-NanoNano200[Suf:test]");
 
             logger.LogInformation("FooBar{0}-NanoNano{1}", 100, 300);
-            processsor.DequeueAsString().Should().Be("[Pre:Information]FooBar100-NanoNano300[Suf:test]");
+            processsor.DequeueAsString().ShouldBe("[Pre:Information]FooBar100-NanoNano300[Suf:test]");
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace ZLogger.Tests
             logger.ZLogDebug($"array: {array} enumerable: {enumerable}");
 
             var message = processor.DequeueAsString();
-            message.Should().Be("array: [111,222,333] enumerable: [\"a\",\"i\",\"u\",\"e\"]");
+            message.ShouldBe("array: [111,222,333] enumerable: [\"a\",\"i\",\"u\",\"e\"]");
         }
     }
 }

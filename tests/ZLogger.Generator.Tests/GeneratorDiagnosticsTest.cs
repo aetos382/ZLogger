@@ -23,12 +23,12 @@ public class GeneratorDiagnosticsTest(ITestOutputHelper output)
 
         if (!allowMultipleError)
         {
-            diagnostics.Length.Should().Be(1);
-            diagnostics[0].Id.Should().Be("ZLOG" + id.ToString("000"));
+            diagnostics.Length.ShouldBe(1);
+            diagnostics[0].Id.ShouldBe("ZLOG" + id.ToString("000"));
         }
         else
         {
-            diagnostics.Select(x => x.Id).Should().Contain("ZLOG" + id.ToString("000"));
+            diagnostics.Select(x => x.Id).ShouldContain("ZLOG" + id.ToString("000"));
         }
     }
 

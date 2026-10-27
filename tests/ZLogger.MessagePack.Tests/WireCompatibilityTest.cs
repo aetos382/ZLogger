@@ -1,7 +1,7 @@
 using System;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
+using Shouldly;
 using Xunit;
 
 namespace ZLogger.MessagePack.Tests;
@@ -53,7 +53,7 @@ public class WireCompatibilityTest
             logger.ZLogInformation($"{i} {l} {b} {sb} {c} {f} {d} {fl} {s} {ni} {nn} {ns} {e} {m} {arr}");
         }
 
-        Convert.ToHexString(processor.DequeueAsRaw()).Should().Be(expected);
+        Convert.ToHexString(processor.DequeueAsRaw()).ShouldBe(expected);
     }
 
     public static TheoryData<string, object, string> SingleValueCases => new()
@@ -87,6 +87,6 @@ public class WireCompatibilityTest
 
         // a map of one entry: the key as fixstr, then the value
         var expected = "81" + Convert.ToHexString([(byte)(0xa0 | name.Length)]) + Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(name)) + expectedValue;
-        Convert.ToHexString(processor.DequeueAsRaw()).Should().Be(expected);
+        Convert.ToHexString(processor.DequeueAsRaw()).ShouldBe(expected);
     }
 }

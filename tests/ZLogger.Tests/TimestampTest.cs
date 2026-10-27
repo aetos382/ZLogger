@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Buffers;
@@ -50,10 +50,10 @@ public class TimestampTest
     [Fact]
     public void TimestampFormatTest()
     {
-        GetLogString($"{0}").Should().Be("1999-12-30 11:12:33.000");
-        GetLogString($"{0:datetime}").Should().Be("1999-12-30 11:12:33");
-        GetLogString($"{0:dateonly}").Should().Be("1999-12-30");
-        GetLogString($"{0:timeonly}").Should().Be("11:12:33");
+        GetLogString($"{0}").ShouldBe("1999-12-30 11:12:33.000");
+        GetLogString($"{0:datetime}").ShouldBe("1999-12-30 11:12:33");
+        GetLogString($"{0:dateonly}").ShouldBe("1999-12-30");
+        GetLogString($"{0:timeonly}").ShouldBe("11:12:33");
     }
 }
 

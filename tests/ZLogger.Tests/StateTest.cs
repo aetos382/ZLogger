@@ -41,15 +41,15 @@ namespace ZLogger.Tests
             var state = handler.GetState();
             using (var enumerator = state.GetEnumerator())
             {
-                enumerator.MoveNext().Should().BeTrue();
-                enumerator.Current.Key.Should().Be("x");
-                enumerator.Current.Value.Should().Be(100);
+                enumerator.MoveNext().ShouldBeTrue();
+                enumerator.Current.Key.ShouldBe("x");
+                enumerator.Current.Value.ShouldBe(100);
             
-                enumerator.MoveNext().Should().BeTrue();
-                enumerator.Current.Key.Should().Be("y");
-                enumerator.Current.Value.Should().Be(200);
+                enumerator.MoveNext().ShouldBeTrue();
+                enumerator.Current.Key.ShouldBe("y");
+                enumerator.Current.Value.ShouldBe(200);
             
-                enumerator.MoveNext().Should().BeFalse();
+                enumerator.MoveNext().ShouldBeFalse();
             }
             state.Release();
             
@@ -57,7 +57,7 @@ namespace ZLogger.Tests
             state = handler.GetState();
             using (var enumerator = state.GetEnumerator())
             {
-                enumerator.MoveNext().Should().BeFalse();
+                enumerator.MoveNext().ShouldBeFalse();
             }
             state.Release();
             

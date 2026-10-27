@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using System;
 using System.Net;
 using System.Text;
@@ -14,36 +14,36 @@ namespace ZLogger.Tests
         [Fact]
         public void Lookup()
         {
-            EnumDictionary<Foo>.GetStringName(Foo.AAA).Should().Be("AAA");
-            EnumDictionary<Foo>.GetStringName(Foo.BBB).Should().Be("BBB");
-            EnumDictionary<Foo>.GetStringName(Foo.CCC).Should().Be("CCC");
-            EnumDictionary<Foo>.GetStringName((Foo)33).Should().BeNull();
+            EnumDictionary<Foo>.GetStringName(Foo.AAA).ShouldBe("AAA");
+            EnumDictionary<Foo>.GetStringName(Foo.BBB).ShouldBe("BBB");
+            EnumDictionary<Foo>.GetStringName(Foo.CCC).ShouldBe("CCC");
+            EnumDictionary<Foo>.GetStringName((Foo)33).ShouldBeNull();
 
-            EnumDictionary<More>.GetStringName(More.AAA).Should().Be("AAA");
-            EnumDictionary<More>.GetStringName(More.BBB).Should().Be("BBB");
-            EnumDictionary<More>.GetStringName(More.CCC).Should().Be("CCC");
-            EnumDictionary<More>.GetStringName((More)33).Should().BeNull();
+            EnumDictionary<More>.GetStringName(More.AAA).ShouldBe("AAA");
+            EnumDictionary<More>.GetStringName(More.BBB).ShouldBe("BBB");
+            EnumDictionary<More>.GetStringName(More.CCC).ShouldBe("CCC");
+            EnumDictionary<More>.GetStringName((More)33).ShouldBeNull();
 
-            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.A).Should().Be("A");
-            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.D).Should().Be("D");
-            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.All).Should().Be("All");
-            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.None).Should().Be("None");
-            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.A | FlagsEnum.D).Should().BeNull();
+            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.A).ShouldBe("A");
+            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.D).ShouldBe("D");
+            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.All).ShouldBe("All");
+            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.None).ShouldBe("None");
+            EnumDictionary<FlagsEnum>.GetStringName(FlagsEnum.A | FlagsEnum.D).ShouldBeNull();
 
-            EnumDictionary<Duplicate>.GetStringName(Duplicate.Foo).Should().Be("Foo");
-            (EnumDictionary<Duplicate>.GetStringName(Duplicate.Bar) is "MoreBar" or "Bar").Should().BeTrue();
-            EnumDictionary<Duplicate>.GetStringName(Duplicate.Baz).Should().Be("Baz");
-            (EnumDictionary<Duplicate>.GetStringName(Duplicate.MoreBar) is "MoreBar" or "Bar").Should().BeTrue();
-            EnumDictionary<Duplicate>.GetStringName(Duplicate.End).Should().Be("End");
+            EnumDictionary<Duplicate>.GetStringName(Duplicate.Foo).ShouldBe("Foo");
+            (EnumDictionary<Duplicate>.GetStringName(Duplicate.Bar) is "MoreBar" or "Bar").ShouldBeTrue();
+            EnumDictionary<Duplicate>.GetStringName(Duplicate.Baz).ShouldBe("Baz");
+            (EnumDictionary<Duplicate>.GetStringName(Duplicate.MoreBar) is "MoreBar" or "Bar").ShouldBeTrue();
+            EnumDictionary<Duplicate>.GetStringName(Duplicate.End).ShouldBe("End");
         }
 
         [Fact]
         public void HttpStatusCodeTest()
         {
-            EnumDictionary<HttpStatusCode>.GetStringName(HttpStatusCode.InternalServerError).Should().Be("InternalServerError");
-            EnumDictionary<HttpStatusCode>.GetStringName(HttpStatusCode.RequestEntityTooLarge).Should().Be("RequestEntityTooLarge");
-            EnumDictionary<HttpStatusCode>.GetUtf8Name(HttpStatusCode.NetworkAuthenticationRequired).ToArray().Should().Equal(Encoding.UTF8.GetBytes("NetworkAuthenticationRequired"));
-            EnumDictionary<HttpStatusCode>.GetJsonEncodedName(HttpStatusCode.UnprocessableEntity).Should().Be(JsonEncodedText.Encode("UnprocessableEntity"));
+            EnumDictionary<HttpStatusCode>.GetStringName(HttpStatusCode.InternalServerError).ShouldBe("InternalServerError");
+            EnumDictionary<HttpStatusCode>.GetStringName(HttpStatusCode.RequestEntityTooLarge).ShouldBe("RequestEntityTooLarge");
+            EnumDictionary<HttpStatusCode>.GetUtf8Name(HttpStatusCode.NetworkAuthenticationRequired).ToArray().ShouldBe(Encoding.UTF8.GetBytes("NetworkAuthenticationRequired"));
+            EnumDictionary<HttpStatusCode>.GetJsonEncodedName(HttpStatusCode.UnprocessableEntity).ShouldBe(JsonEncodedText.Encode("UnprocessableEntity"));
         }
     }
 

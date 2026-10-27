@@ -1,8 +1,8 @@
 ﻿using System;
-using FluentAssertions;
 using MessagePack;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
+using Shouldly;
 using Xunit;
 
 namespace ZLogger.MessagePack.Tests;
@@ -41,12 +41,12 @@ public class FormatterTest
         logger.ZLogInformation(new EventId(1, "HOGE"), $"AAA {111} BBB {"Hello"}");
             
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Information");
-        ((string)msgpack["Message"]).Should().Be("AAA 111 BBB Hello");
-        ((DateTimeOffset)msgpack["Timestamp"]).Should().Be(now);
-        ((bool)msgpack.ContainsKey("Exception")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("Payload")).Should().BeFalse();
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Information");
+        ((string)msgpack["Message"]).ShouldBe("AAA 111 BBB Hello");
+        ((DateTimeOffset)msgpack["Timestamp"]).ShouldBe(now);
+        ((bool)msgpack.ContainsKey("Exception")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("Payload")).ShouldBeFalse();
     }
 
     [Fact]
@@ -62,14 +62,14 @@ public class FormatterTest
         }
         
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Error");
-        ((string)msgpack["Message"]).Should().Be("DAMEDA 111");
-        ((DateTimeOffset)msgpack["Timestamp"]).Should().Be(now);
-        ((string)msgpack["Exception"]["Name"]).Should().Be("ZLogger.MessagePack.Tests.TestException");
-        ((string)msgpack["Exception"]["Message"]).Should().Be("DAME");
-        ((string)msgpack["Exception"]["StackTrace"]).Should().NotBeEmpty();
-        ((string)msgpack["Exception"]["InnerException"]).Should().BeNull();
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Error");
+        ((string)msgpack["Message"]).ShouldBe("DAMEDA 111");
+        ((DateTimeOffset)msgpack["Timestamp"]).ShouldBe(now);
+        ((string)msgpack["Exception"]["Name"]).ShouldBe("ZLogger.MessagePack.Tests.TestException");
+        ((string)msgpack["Exception"]["Message"]).ShouldBe("DAME");
+        ((string)msgpack["Exception"]["StackTrace"]).ShouldNotBeEmpty();
+        ((string)msgpack["Exception"]["InnerException"]).ShouldBeNull();
     }
 
     [Fact]
@@ -85,15 +85,15 @@ public class FormatterTest
         }
         
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Error");
-        ((string)msgpack["Message"]).Should().Be("DAMEDA 111");
-        ((DateTimeOffset)msgpack["Timestamp"]).Should().Be(now);
-        ((string)msgpack["Exception"]["Name"]).Should().Be("ZLogger.MessagePack.Tests.TestException");
-        ((string)msgpack["Exception"]["Message"]).Should().Be("DAME!");
-        ((string)msgpack["Exception"]["StackTrace"]).Should().NotBeEmpty();
-        ((string)msgpack["Exception"]["InnerException"]["Name"]).Should().Be("ZLogger.MessagePack.Tests.TestException");
-        ((string)msgpack["Exception"]["InnerException"]["Message"]).Should().Be("INNER!");
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Error");
+        ((string)msgpack["Message"]).ShouldBe("DAMEDA 111");
+        ((DateTimeOffset)msgpack["Timestamp"]).ShouldBe(now);
+        ((string)msgpack["Exception"]["Name"]).ShouldBe("ZLogger.MessagePack.Tests.TestException");
+        ((string)msgpack["Exception"]["Message"]).ShouldBe("DAME!");
+        ((string)msgpack["Exception"]["StackTrace"]).ShouldNotBeEmpty();
+        ((string)msgpack["Exception"]["InnerException"]["Name"]).ShouldBe("ZLogger.MessagePack.Tests.TestException");
+        ((string)msgpack["Exception"]["InnerException"]["Message"]).ShouldBe("INNER!");
     }
     
     [Fact]
@@ -105,13 +105,13 @@ public class FormatterTest
         logger.ZLogInformation(new EventId(1, "HOGE"), $"UMU {payload} {x} {y}");
         
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Information");
-        ((DateTimeOffset)msgpack["Timestamp"]).Should().Be(now);
-        ((int?)msgpack["x"]).Should().Be(100);
-        ((int?)msgpack["y"]).Should().Be(null);
-        ((int)msgpack["payload"]["x"]).Should().Be(999);
-        ((bool)msgpack.ContainsKey("Exception")).Should().BeFalse();            
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Information");
+        ((DateTimeOffset)msgpack["Timestamp"]).ShouldBe(now);
+        ((int?)msgpack["x"]).ShouldBe(100);
+        ((int?)msgpack["y"]).ShouldBe(null);
+        ((int)msgpack["payload"]["x"]).ShouldBe(999);
+        ((bool)msgpack.ContainsKey("Exception")).ShouldBeFalse();            
     }
 
     [Fact]
@@ -138,11 +138,11 @@ public class FormatterTest
         logger.ZLogInformation($"AAA {XyzAbc} {fOo}");
 
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Information");
-        ((string)msgpack["Message"]).Should().Be("AAA 100 200");
-        ((int)msgpack["xyzAbc"]).Should().Be(100);
-        ((int)msgpack["fOo"]).Should().Be(200);
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Information");
+        ((string)msgpack["Message"]).ShouldBe("AAA 100 200");
+        ((int)msgpack["xyzAbc"]).ShouldBe(100);
+        ((int)msgpack["fOo"]).ShouldBe(200);
     }
 
     [Fact]
@@ -169,12 +169,12 @@ public class FormatterTest
         logger.ZLogInformation(new EventId(1, "TEST"), $"HELLO!");
         
         var msgpack = processor.Dequeue();
-        ((string)msgpack["LogLevel"]).Should().Be("Information");
-        ((int)msgpack["EventId"]).Should().Be(1);
-        ((DateTimeOffset)msgpack["Timestamp"]).Should().Be(now);
-        ((bool)msgpack.ContainsKey("Exception")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("Category")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("EventIdName")).Should().BeFalse();
+        ((string)msgpack["LogLevel"]).ShouldBe("Information");
+        ((int)msgpack["EventId"]).ShouldBe(1);
+        ((DateTimeOffset)msgpack["Timestamp"]).ShouldBe(now);
+        ((bool)msgpack.ContainsKey("Exception")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("Category")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("EventIdName")).ShouldBeFalse();
     }
 
     [Fact]
@@ -197,13 +197,13 @@ public class FormatterTest
         logger.ZLogInformation(new EventId(1, "TEST"), $"HELLO!");
         
         var msgpack = processor.Dequeue();
-        ((bool)msgpack.ContainsKey("LogLevel")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("Timestamp")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("EventId")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("EventIdName")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("Exception")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("Category")).Should().BeFalse();
-        ((bool)msgpack.ContainsKey("EventIdName")).Should().BeFalse();
+        ((bool)msgpack.ContainsKey("LogLevel")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("Timestamp")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("EventId")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("EventIdName")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("Exception")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("Category")).ShouldBeFalse();
+        ((bool)msgpack.ContainsKey("EventIdName")).ShouldBeFalse();
     }
     
     [Fact]
@@ -235,7 +235,7 @@ public class FormatterTest
         logger.ZLogInformation($"HELLO!");
 
         var msg = processor.Dequeue();
-        ((string)msg["level"]).Should().Be("INFO");
+        ((string)msg["level"]).ShouldBe("INFO");
     }
 
     [Fact]
@@ -267,8 +267,8 @@ public class FormatterTest
         logger.ZLogInformation($"{456:@y}");
 
         var msg = processor.Dequeue();
-        ((string)msg["Message"]).Should().Be("456");
-        ((int)msg["attributes"]["y"]).Should().Be(456);
+        ((string)msg["Message"]).ShouldBe("456");
+        ((int)msg["attributes"]["y"]).ShouldBe(456);
     }
 
     [Fact]
@@ -303,9 +303,9 @@ public class FormatterTest
         }
 
         var msg = processor.Dequeue();
-        ((string)msg["Message"]).Should().Be("456");
-        ((int)msg["scope"]["X"]).Should().Be(123);
-        ((int)msg["attributes"]["y"]).Should().Be(456);
+        ((string)msg["Message"]).ShouldBe("456");
+        ((int)msg["scope"]["X"]).ShouldBe(123);
+        ((int)msg["attributes"]["y"]).ShouldBe(456);
     }
     
     /// <summary>
@@ -318,7 +318,7 @@ public class FormatterTest
     {
         var formatter = new MessagePackZLoggerFormatter();
         var setOptions = () => formatter.MessagePackSerializerOptions = MessagePackSerializerOptions.Default.WithFraming();
-        setOptions.Should().Throw<ArgumentException>();
+        Should.Throw<ArgumentException>(setOptions);
     }
 
     /// <summary>
@@ -329,7 +329,7 @@ public class FormatterTest
     {
         var formatter = new MessagePackZLoggerFormatter();
         var setOptions = () => formatter.MessagePackSerializerOptions = null!;
-        setOptions.Should().Throw<ArgumentNullException>();
+        Should.Throw<ArgumentNullException>(setOptions);
     }
 
     /// <summary>
@@ -373,8 +373,8 @@ public class FormatterTest
         }, TestContext.Current.CancellationToken);
 
         var msgpack = processor.Dequeue();
-        ((int)msgpack["p_"]).Should().Be(1);
-        ((int)msgpack["p_" + longKey]).Should().Be(2);
+        ((int)msgpack["p_"]).ShouldBe(1);
+        ((int)msgpack["p_" + longKey]).ShouldBe(2);
     }
 
     /// <summary>
@@ -407,20 +407,23 @@ public class FormatterTest
 
         var x = 1;
         var failing = () => System.Threading.Tasks.Task.Run(() => logger.ZLogInformation($"{x}"), TestContext.Current.CancellationToken);
-        var thrown = await failing.Should().ThrowAsync<AggregateException>();
-        thrown.Which.InnerExceptions.Should().ContainSingle()
-            .Which.Should().BeOfType<InvalidOperationException>()
-            .Which.Message.Should().ContainAll(nameof(FailingMutator), "11 times", "16384 characters");
+        var thrown = await Should.ThrowAsync<AggregateException>(failing);
+        var message = thrown.InnerExceptions.ShouldHaveSingleItem()
+            .ShouldBeOfType<InvalidOperationException>()
+            .Message;
+        message.ShouldContain(nameof(FailingMutator), Case.Sensitive);
+        message.ShouldContain("11 times", Case.Sensitive);
+        message.ShouldContain("16384 characters", Case.Sensitive);
 
-        mutator.Calls.Should().Be(11);
-        mutator.DestinationLengths.Should().Equal(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 11), i => 16 << i));
-        processor.EntryMessages.Should().BeEmpty();
+        mutator.Calls.ShouldBe(11);
+        mutator.DestinationLengths.ShouldBe(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 11), i => 16 << i));
+        processor.EntryMessages.ShouldBeEmpty();
 
         // An entry without parameters does not call the mutator; it must not carry anything left from the failed one.
         logger.ZLogInformation($"TAIL");
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Message"]).Should().Be("TAIL");
-        ((int)((System.Collections.IDictionary)msgpack).Count).Should().Be(1);
+        ((string)msgpack["Message"]).ShouldBe("TAIL");
+        ((int)((System.Collections.IDictionary)msgpack).Count).ShouldBe(1);
     }
 
     /// <summary>
@@ -458,12 +461,12 @@ public class FormatterTest
                 logger.ZLogInformation($"AAA");
             }
         }, TestContext.Current.CancellationToken);
-        var thrown = await failing.Should().ThrowAsync<AggregateException>();
-        thrown.Which.InnerExceptions.Should().ContainSingle()
-            .Which.Should().BeOfType<InvalidOperationException>()
-            .Which.Message.Should().Contain($"{300 * 1024} characters");
+        var thrown = await Should.ThrowAsync<AggregateException>(failing);
+        thrown.InnerExceptions.ShouldHaveSingleItem()
+            .ShouldBeOfType<InvalidOperationException>()
+            .Message.ShouldContain($"{300 * 1024} characters", Case.Sensitive);
 
-        mutator.DestinationLengths.Should().Equal(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 11), i => 300 << i));
+        mutator.DestinationLengths.ShouldBe(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 11), i => 300 << i));
     }
 
     // Always returns false, and records how it was called. Throws once called far more often than the retry limit allows.
@@ -536,15 +539,15 @@ public class FormatterTest
         logger.ZLogInformation(new EventId(1, "HOGE"), $"AAA {x}");
 
         var msgpack = processor.Dequeue();
-        ((string)msgpack["Category"]).Should().Be("test");
-        ((string)msgpack["LogLevel"]).Should().Be("Information");
-        ((int)msgpack["EventId"]).Should().Be(1);
-        ((string)msgpack["EventIdName"]).Should().Be("HOGE");
-        ((string)msgpack["Message"]).Should().Be("AAA 100");
-        ((int)msgpack["x"]).Should().Be(100);
-        ((string)msgpack["MemberName"]).Should().Be(nameof(IncludeAllProperties));
-        ((string)msgpack["FilePath"]).Should().EndWith("FormatterTest.cs");
-        ((int)msgpack["LineNumber"]).Should().BePositive();
+        ((string)msgpack["Category"]).ShouldBe("test");
+        ((string)msgpack["LogLevel"]).ShouldBe("Information");
+        ((int)msgpack["EventId"]).ShouldBe(1);
+        ((string)msgpack["EventIdName"]).ShouldBe("HOGE");
+        ((string)msgpack["Message"]).ShouldBe("AAA 100");
+        ((int)msgpack["x"]).ShouldBe(100);
+        ((string)msgpack["MemberName"]).ShouldBe(nameof(IncludeAllProperties));
+        ((string)msgpack["FilePath"]).ShouldEndWith("FormatterTest.cs", Case.Sensitive);
+        ((int)msgpack["LineNumber"]).ShouldBePositive();
     }
 
     /// <summary>
@@ -581,12 +584,12 @@ public class FormatterTest
         }
 
         var msgpack = processor.Dequeue();
-        ((long)msgpack["Timestamp"]).Should().Be(now.DateTime.ToBinary()); // the formatter writes LogInfo.Timestamp.Utc.DateTime, whose Kind is Unspecified
-        ((long)msgpack["dto"][0]).Should().Be(dto.Ticks);
-        ((short)msgpack["dto"][1]).Should().Be(9 * 60);
-        ((byte[])msgpack["guid"]).Should().Equal(guid.ToByteArray());
-        ((byte[])msgpack["amount"]).Should().HaveCount(16);
-        ((byte[])msgpack["ScopeGuid"]).Should().Equal(guid.ToByteArray());
+        ((long)msgpack["Timestamp"]).ShouldBe(now.DateTime.ToBinary()); // the formatter writes LogInfo.Timestamp.Utc.DateTime, whose Kind is Unspecified
+        ((long)msgpack["dto"][0]).ShouldBe(dto.Ticks);
+        ((short)msgpack["dto"][1]).ShouldBe((short)(9 * 60));
+        ((byte[])msgpack["guid"]).ShouldBe(guid.ToByteArray());
+        ((byte[])msgpack["amount"]).Length.ShouldBe(16);
+        ((byte[])msgpack["ScopeGuid"]).ShouldBe(guid.ToByteArray());
     }
 
     /// <summary>
@@ -618,8 +621,8 @@ public class FormatterTest
         logger.LogDateTimes(dt, ndt);
 
         var msgpack = processor.Dequeue();
-        ((long)msgpack["dt"]).Should().Be(dt.ToBinary());
-        ((long)msgpack["ndt"]).Should().Be(ndt.Value.ToBinary());
+        ((long)msgpack["dt"]).ShouldBe(dt.ToBinary());
+        ((long)msgpack["ndt"]).ShouldBe(ndt.Value.ToBinary());
     }
 
     /// <summary>
@@ -642,13 +645,13 @@ public class FormatterTest
         }
 
         var inner = processor.Dequeue();
-        ((string)inner["Message"]).Should().Be("inner");
+        ((string)inner["Message"]).ShouldBe("inner");
 
         var outer = processor.Dequeue();
-        ((string)outer["Message"]).Should().Be("outer outer-value");
-        ((string)outer["Category"]).Should().Be("test");
-        ((int)outer["payload"]["x"]).Should().Be(5);
-        processor.EntryMessages.Should().BeEmpty();
+        ((string)outer["Message"]).ShouldBe("outer outer-value");
+        ((string)outer["Category"]).ShouldBe("test");
+        ((int)outer["payload"]["x"]).ShouldBe(5);
+        processor.EntryMessages.ShouldBeEmpty();
     }
 
     /// <summary>
@@ -663,11 +666,11 @@ public class FormatterTest
         logger.ZLogInformation($"{interpolated}");
         logger.LogNullableEnums(LogLevel.Error, null);
 
-        ((int)processor.Dequeue()["interpolated"]).Should().Be((int)LogLevel.Warning);
+        ((int)processor.Dequeue()["interpolated"]).ShouldBe((int)LogLevel.Warning);
 
         var generated = processor.Dequeue();
-        ((int)generated["level"]).Should().Be((int)LogLevel.Error);
-        ((object)generated["none"]).Should().BeNull();
+        ((int)generated["level"]).ShouldBe((int)LogLevel.Error);
+        ((object)generated["none"]).ShouldBeNull();
     }
 
     /// <summary>
@@ -686,14 +689,14 @@ public class FormatterTest
         var padding = new string('a', messageLength);
         var unserializable = new UnserializableValue();
         var failing = () => logger.ZLogInformation($"{padding}{unserializable}");
-        failing.Should().Throw<Exception>();
+        Should.Throw<Exception>(failing);
 
         var tail = "TAIL";
         logger.ZLogInformation($"{tail}");
 
         var msgpack = processor.Dequeue();
-        ((string)msgpack["tail"]).Should().Be("TAIL");
-        processor.EntryMessages.Should().BeEmpty();
+        ((string)msgpack["tail"]).ShouldBe("TAIL");
+        processor.EntryMessages.ShouldBeEmpty();
     }
 
     /// <summary>
@@ -710,11 +713,11 @@ public class FormatterTest
         logger.ZLogInformation($"{dto} {ts} {guid} {tail}");
 
         var msgpack = processor.Dequeue();
-        ((int)((System.Collections.IDictionary)msgpack).Count).Should().Be(4 + 4); // Timestamp, LogLevel, Category, Message and the parameters (no exception and no scope, so those keys are absent)
-        ((short)msgpack["dto"][1]).Should().Be(9 * 60);
-        ((long)msgpack["ts"]).Should().Be(ts.Ticks);
-        ((string)msgpack["guid"]).Should().Be("0f8fad5b-d9cb-469f-a165-70867728950e");
-        ((string)msgpack["tail"]).Should().Be("TAIL");
+        ((int)((System.Collections.IDictionary)msgpack).Count).ShouldBe(4 + 4); // Timestamp, LogLevel, Category, Message and the parameters (no exception and no scope, so those keys are absent)
+        ((short)msgpack["dto"][1]).ShouldBe((short)(9 * 60));
+        ((long)msgpack["ts"]).ShouldBe(ts.Ticks);
+        ((string)msgpack["guid"]).ShouldBe("0f8fad5b-d9cb-469f-a165-70867728950e");
+        ((string)msgpack["tail"]).ShouldBe("TAIL");
     }
 
     // MessagePack v4 has formatters for DateOnly and TimeOnly only in its net9.0+ build; on net8.0 its netstandard build throws for them.
@@ -732,10 +735,10 @@ public class FormatterTest
         logger.ZLogInformation($"{date} {time} {tail}");
 
         var msgpack = processor.Dequeue();
-        ((int)((System.Collections.IDictionary)msgpack).Count).Should().Be(4 + 3); // Timestamp, LogLevel, Category, Message and the parameters (no exception and no scope, so those keys are absent)
-        ((int)msgpack["date"]).Should().Be(date.DayNumber);
-        ((long)msgpack["time"]).Should().Be(time.Ticks);
-        ((string)msgpack["tail"]).Should().Be("TAIL");
+        ((int)((System.Collections.IDictionary)msgpack).Count).ShouldBe(4 + 3); // Timestamp, LogLevel, Category, Message and the parameters (no exception and no scope, so those keys are absent)
+        ((int)msgpack["date"]).ShouldBe(date.DayNumber);
+        ((long)msgpack["time"]).ShouldBe(time.Ticks);
+        ((string)msgpack["tail"]).ShouldBe("TAIL");
     }
 #endif
 
@@ -758,7 +761,7 @@ public class FormatterTest
         logger.Log1(IntValue, IntNullableValue, IntNull, FloatValue, FloatNullableValue, FloatNull, StringValue);
         var msg2 = processor.DequeueAsRaw();
 
-        msg1.AsSpan().SequenceEqual(msg2).Should().BeTrue();
+        msg1.AsSpan().SequenceEqual(msg2).ShouldBeTrue();
     }
 }
 

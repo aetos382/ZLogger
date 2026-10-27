@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Configuration;
+using Shouldly;
 using ZLogger.Providers;
 
 namespace ZLogger.Tests;
@@ -27,9 +27,9 @@ public class BuilderTest
 
         var logger = loggerFactory.CreateLogger<BuilderTest>();
 
-        logger.IsEnabled(LogLevel.Information).Should().BeFalse();
-        logger.IsEnabled(LogLevel.Warning).Should().BeFalse();
-        logger.IsEnabled(LogLevel.Error).Should().BeTrue();
+        logger.IsEnabled(LogLevel.Information).ShouldBeFalse();
+        logger.IsEnabled(LogLevel.Warning).ShouldBeFalse();
+        logger.IsEnabled(LogLevel.Error).ShouldBeTrue();
     }
 
     [Fact]
@@ -58,11 +58,11 @@ public class BuilderTest
 
         var logger = loggerFactory.CreateLogger<BuilderTest>();
 
-        logger.IsEnabled(LogLevel.Information).Should().BeFalse();
-        logger.IsEnabled(LogLevel.Warning).Should().BeTrue();
-        logger.IsEnabled(LogLevel.Error).Should().BeTrue();
+        logger.IsEnabled(LogLevel.Information).ShouldBeFalse();
+        logger.IsEnabled(LogLevel.Warning).ShouldBeTrue();
+        logger.IsEnabled(LogLevel.Error).ShouldBeTrue();
         
         logger.LogWarning($"hoge");
-        messages.Should().BeEmpty();
+        messages.ShouldBeEmpty();
     }
 }

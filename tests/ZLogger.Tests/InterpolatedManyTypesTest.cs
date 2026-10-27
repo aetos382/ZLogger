@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,10 +35,10 @@ namespace ZLogger.Tests
             logger.ZLogInformation($"f:{foo} b:{bar} d:{dt:yyyy-MM-dd} n:{dtn} s:{seq} v:{vec:json} v2:{vec2:@v2:json}");
 
             var msg = stringProcessor.DequeueAsString();
-            msg.Should().Be("f:10 b: d:1999-12-10 n: s:[1,2,3,4,5] v:{\"X\":1,\"Y\":2,\"Z\":3} v2:{\"X\":4,\"Y\":5,\"Z\":6}");
+            msg.ShouldBe("f:10 b: d:1999-12-10 n: s:[1,2,3,4,5] v:{\"X\":1,\"Y\":2,\"Z\":3} v2:{\"X\":4,\"Y\":5,\"Z\":6}");
 
             var json = jsonProcessor.DequeueAsString();
-            json.Should().Be("""
+            json.ShouldBe("""
 {"foo":10,"bar":null,"dt":"1999-12-10T00:00:00","dtn":null,"seq":[1,2,3,4,5],"vec":{"X":1,"Y":2,"Z":3},"v2":{"X":4,"Y":5,"Z":6}}
 """);
         }

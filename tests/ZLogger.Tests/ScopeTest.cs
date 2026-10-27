@@ -1,5 +1,5 @@
 using System;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -45,9 +45,9 @@ public class ScopeTest
         }
 
         var doc = JsonDocument.Parse(processor.DequeueAsString()).RootElement;
-        doc.GetProperty("Message").GetString().Should().Be("FooBar333 NanoNano444");
-        doc.GetProperty("X").GetInt32().Should().Be(111);
-        doc.GetProperty("Y").ValueKind.Should().Be(JsonValueKind.Null);
+        doc.GetProperty("Message").GetString().ShouldBe("FooBar333 NanoNano444");
+        doc.GetProperty("X").GetInt32().ShouldBe(111);
+        doc.GetProperty("Y").ValueKind.ShouldBe(JsonValueKind.Null);
     }
         
     [Fact]
@@ -62,8 +62,8 @@ public class ScopeTest
 
         var doc = JsonDocument.Parse(processor.DequeueAsString()).RootElement;
 
-        doc.GetProperty("Message").GetString().Should().Be("FooBar100 NanoNano200");
-        doc.GetProperty("Hoge").GetString().Should().Be("AAA");
+        doc.GetProperty("Message").GetString().ShouldBe("FooBar100 NanoNano200");
+        doc.GetProperty("Hoge").GetString().ShouldBe("AAA");
     }
         
     [Fact]
@@ -78,10 +78,10 @@ public class ScopeTest
 
         var json = processor.DequeueAsString();
         var doc = JsonDocument.Parse(json).RootElement;
-        doc.GetProperty("Message").GetString().Should().Be("FooBar100 NanoNano200");
+        doc.GetProperty("Message").GetString().ShouldBe("FooBar100 NanoNano200");
             
         var scope = doc.GetProperty("Scope");
-        scope.GetProperty("X").GetInt32().Should().Be(999);
+        scope.GetProperty("X").GetInt32().ShouldBe(999);
     }
         
     [Fact]
@@ -100,13 +100,13 @@ public class ScopeTest
         var log1 = JsonDocument.Parse(processor.DequeueAsString()).RootElement;
         var log2 = JsonDocument.Parse(processor.DequeueAsString()).RootElement;
 
-        log1.GetProperty("Message").GetString().Should().Be("Message 1");
-        log1.GetProperty("X").GetInt32().Should().Be(111);
-        log1.TryGetProperty("Y", out _).Should().BeFalse();
+        log1.GetProperty("Message").GetString().ShouldBe("Message 1");
+        log1.GetProperty("X").GetInt32().ShouldBe(111);
+        log1.TryGetProperty("Y", out _).ShouldBeFalse();
 
-        log2.GetProperty("Message").GetString().Should().Be("Message 2");
-        log2.GetProperty("X").GetInt32().Should().Be(111);
-        log2.GetProperty("Y").GetInt32().Should().Be(222);
+        log2.GetProperty("Message").GetString().ShouldBe("Message 2");
+        log2.GetProperty("X").GetInt32().ShouldBe(111);
+        log2.GetProperty("Y").GetInt32().ShouldBe(222);
     }
 
     [Fact]

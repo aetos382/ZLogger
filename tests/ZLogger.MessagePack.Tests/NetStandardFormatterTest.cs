@@ -1,7 +1,7 @@
 ﻿using System;
-using FluentAssertions;
 using MessagePack;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 using Xunit;
 using ZLogger.MessagePack.Tests.NetStandardTypes;
 
@@ -46,7 +46,7 @@ public class NetStandardFormatterTest
         var payload = new NetStandardPayload { X = 42 };
         logger.ZLogInformation($"{payload}");
 
-        Convert.ToHexString(processor.DequeueAsRaw()).Should().Be(ExpectedSingleEntry("payload", payload, formatter.MessagePackSerializerOptions));
+        Convert.ToHexString(processor.DequeueAsRaw()).ShouldBe(ExpectedSingleEntry("payload", payload, formatter.MessagePackSerializerOptions));
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class NetStandardFormatterTest
             logger.ZLogInformation($"message");
         }
 
-        Convert.ToHexString(processor.DequeueAsRaw()).Should().Be(ExpectedSingleEntry("Payload", payload, formatter.MessagePackSerializerOptions));
+        Convert.ToHexString(processor.DequeueAsRaw()).ShouldBe(ExpectedSingleEntry("Payload", payload, formatter.MessagePackSerializerOptions));
     }
 
     /// <summary>
@@ -90,10 +90,10 @@ public class NetStandardFormatterTest
         logger.ZLogInformation($"{dto}");
 
         var expected = ExpectedSingleEntry("dto", dto, options);
-        Convert.ToHexString(processor.DequeueAsRaw()).Should().Be(expected);
+        Convert.ToHexString(processor.DequeueAsRaw()).ShouldBe(expected);
 
         // The custom formatter writes the UTC ticks as an integer (uint64, the smallest form for this positive value),
         // not the array that the built-in formatter writes.
-        expected.Should().EndWith("CF" + dto.UtcTicks.ToString("X16"));
+        expected.ShouldEndWith("CF" + dto.UtcTicks.ToString("X16"), Case.Sensitive);
     }
 }

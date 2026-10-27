@@ -23,16 +23,16 @@ public class LogCallerInfoTest
         logger.ZLogInformation($"aaaa");
 
         var x = processor.Entries.Dequeue();
-        x.LogInfo.MemberName.Should().Be("CallerInfo");
-        Path.GetFileName(x.LogInfo.FilePath).Should().Be("CallerInfoTest.cs");
-        x.LogInfo.LineNumber.Should().Be(23);
+        x.LogInfo.MemberName.ShouldBe("CallerInfo");
+        Path.GetFileName(x.LogInfo.FilePath).ShouldBe("CallerInfoTest.cs");
+        x.LogInfo.LineNumber.ShouldBe(23);
 
         var currentThread = System.Threading.Thread.CurrentThread;
 
-        x.LogInfo.ThreadInfo.ThreadId.Should().NotBe(-1);
-        x.LogInfo.ThreadInfo.ThreadId.Should().Be(currentThread.ManagedThreadId);
-        x.LogInfo.ThreadInfo.IsThreadPoolThread.Should().Be(currentThread.IsThreadPoolThread);
-        x.LogInfo.ThreadInfo.ThreadName.Should().Be(currentThread.Name);
+        x.LogInfo.ThreadInfo.ThreadId.ShouldNotBe(-1);
+        x.LogInfo.ThreadInfo.ThreadId.ShouldBe(currentThread.ManagedThreadId);
+        x.LogInfo.ThreadInfo.IsThreadPoolThread.ShouldBe(currentThread.IsThreadPoolThread);
+        x.LogInfo.ThreadInfo.ThreadName.ShouldBe(currentThread.Name);
     }
 }
 

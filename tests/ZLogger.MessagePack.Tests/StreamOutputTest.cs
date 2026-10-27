@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using FluentAssertions;
 using MessagePack;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 using Xunit;
 
 namespace ZLogger.MessagePack.Tests;
@@ -45,7 +45,7 @@ public class StreamOutputTest
             }
         }
 
-        errors.Should().BeEmpty();
+        errors.ShouldBeEmpty();
 
         // MemoryStream.ToArray works after the provider has disposed the stream.
         var options = new MessagePackSerializerOptions(MessagePackFormatterFactory.Default.WithContractless());
@@ -56,6 +56,6 @@ public class StreamOutputTest
             indexes.Add(Convert.ToInt32(entry["i"]));
         }
 
-        indexes.Should().Equal(System.Linq.Enumerable.Range(-1, count + 1));
+        indexes.ShouldBe(System.Linq.Enumerable.Range(-1, count + 1));
     }
 }

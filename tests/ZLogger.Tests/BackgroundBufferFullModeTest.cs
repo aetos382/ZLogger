@@ -32,9 +32,9 @@ public class BackgroundBufferFullModeTest
         using var fs = File.OpenText(path);
         for (var i = 0; i < 10; i++)
         {
-            fs.ReadLine().Should().Be($"log {i}");
+            fs.ReadLine().ShouldBe($"log {i}");
         }
-        fs.ReadLine().Should().BeNull();
+        fs.ReadLine().ShouldBeNull();
     }
     
     [Fact]
@@ -63,13 +63,13 @@ public class BackgroundBufferFullModeTest
         loggerFactory.Dispose();
 
         using var fs = File.OpenText(path);
-        fs.ReadLine().Should().Be("log 0");
+        fs.ReadLine().ShouldBe("log 0");
 
         var lastLine = fs.ReadLine(); 
         while (lastLine != null)
         {
             lastLine = fs.ReadLine();
         }
-        lastLine.Should().NotBe("log 9");
+        lastLine.ShouldNotBe("log 9");
     }
 }

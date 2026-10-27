@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 
 namespace ZLogger.Tests;
 
@@ -24,8 +24,8 @@ public class BatchingAsyncLogProcessorTest
             }
         }
 
-        batchingProcessor.Records.Count.Should().Be(5);
-        batchingProcessor.DisposeCalled.Should().BeTrue();
+        batchingProcessor.Records.Count.ShouldBe(5);
+        batchingProcessor.DisposeCalled.ShouldBeTrue();
     }
     
     [Fact]
@@ -44,8 +44,8 @@ public class BatchingAsyncLogProcessorTest
             }
         }
 
-        batchingProcessor.Records.Count.Should().Be(10);
-        batchingProcessor.DisposeCalled.Should().BeTrue();
+        batchingProcessor.Records.Count.ShouldBe(10);
+        batchingProcessor.DisposeCalled.ShouldBeTrue();
     }
 
     [Fact]
@@ -61,9 +61,9 @@ public class BatchingAsyncLogProcessorTest
             logger.ZLogInformation($"ahahah");
         }
 
-        batchingProcessor.Records[0].Should().Be("hehehe");
-        batchingProcessor.Records[1].Should().Be("ahahah");
-        batchingProcessor.DisposeCalled.Should().BeTrue();
+        batchingProcessor.Records[0].ShouldBe("hehehe");
+        batchingProcessor.Records[1].ShouldBe("ahahah");
+        batchingProcessor.DisposeCalled.ShouldBeTrue();
     }
 }
 
