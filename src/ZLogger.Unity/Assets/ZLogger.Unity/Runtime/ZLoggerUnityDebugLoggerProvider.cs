@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+#if UNITY_6000_5_OR_NEWER
+using Unity.Scripting.LifecycleManagement;
+#endif
 using UnityEngine;
 using ZLogger.Unity.Runtime;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -49,7 +52,11 @@ namespace ZLogger.Unity
 
     public class UnityDebugLogProcessor : IAsyncLogProcessor
     {
+        // A per-thread scratch buffer that is cleared before each use.
         [ThreadStatic]
+#if UNITY_6000_5_OR_NEWER
+        [NoAutoStaticsCleanup]
+#endif
         static ArrayBufferWriter<byte>? bufferWriter;
 
         readonly ZLoggerUnityDebugOptions options;
@@ -179,6 +186,10 @@ namespace ZLogger.Unity
 
     static class LogTypeMapper
     {
+        // Init() refreshes this every time Play Mode is entered, so automatic cleanup is unnecessary.
+#if UNITY_6000_5_OR_NEWER
+        [NoAutoStaticsCleanup]
+#endif
         static StackTraceLogType[]? stackTraceLogTypes = default!;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

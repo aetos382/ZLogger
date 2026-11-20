@@ -10,6 +10,9 @@ using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Text.RegularExpressions;
+#if UNITY_6000_5_OR_NEWER
+using Unity.Scripting.LifecycleManagement;
+#endif
 using Application = UnityEngine.Device.Application;
 
 namespace ZLogger.Unity.Runtime
@@ -18,6 +21,11 @@ namespace ZLogger.Unity.Runtime
     {
         static readonly Regex typeBeautifyRegex = new("`.+$", RegexOptions.Compiled);
 
+        // A constant lookup table. [AutoStaticsCleanup] would call Clear() on this readonly
+        // dictionary when entering Play Mode, leaving it empty.
+#if UNITY_6000_5_OR_NEWER
+        [NoAutoStaticsCleanup]
+#endif
         static readonly Dictionary<Type, string> builtInTypeNames = new()
     {
         { typeof(void), "void" },
@@ -38,7 +46,16 @@ namespace ZLogger.Unity.Runtime
         { typeof(ushort), "ushort" }
     };
 
+        // Application.dataPath does not change while the Editor or player is running.
+#if UNITY_6000_5_OR_NEWER
+        [NoAutoStaticsCleanup]
+#endif
         static string? applicationDataPath;
+
+        // Whether the runtime supports StackFrame.GetFileName(), which does not change at run time.
+#if UNITY_6000_5_OR_NEWER
+        [NoAutoStaticsCleanup]
+#endif
         static bool displayFilenames = true;
 
         public static string CleanupStackTrace(StackTrace stackTrace)
